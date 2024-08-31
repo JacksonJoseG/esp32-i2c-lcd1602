@@ -607,7 +607,13 @@ esp_err_t i2c_lcd1602_write_string(const i2c_lcd1602_info_t * i2c_lcd1602_info, 
         err = ESP_OK;
         for (int i = 0; err == ESP_OK && string[i]; ++i)
         {
-            err = _write_data(i2c_lcd1602_info, string[i]);
+            if (string[i] != '\n')
+            {
+                err = _write_data(i2c_lcd1602_info, string[i]);
+            }
+            else {
+                i2c_lcd1602_move_cursor(i2c_lcd1602_info, 0, 1); // moves to second line
+            }
         }
     }
     return err;
